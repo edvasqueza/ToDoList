@@ -5,18 +5,34 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import cl.devnode.todolist.MongoConn.GetAsyncTask;
+import cl.devnode.todolist.MongoConn.TaskModel;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    ArrayList<TaskModel> taskList = new ArrayList<TaskModel>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        TextView info = (TextView) findViewById(R.id.info);
+        ListView listView = (ListView) findViewById(R.id.list);
+        GetAsyncTask tsk = new GetAsyncTask(info);
+        try {
+            taskList = tsk.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        TaskAdapter adapter = new TaskAdapter(this, taskList);
+        listView.setAdapter(adapter);
     }
 
 
@@ -42,10 +58,4 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getCollections(View v){
-        TextView text = (TextView) findViewById(R.id.text);
-        text.setText("Cargando...");
-        GetAsyncTask tsk = new GetAsyncTask(text);
-        tsk.execute();
-    }
 }

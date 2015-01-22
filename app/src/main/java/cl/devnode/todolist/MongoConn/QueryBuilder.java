@@ -4,12 +4,22 @@ package cl.devnode.todolist.MongoConn;
  * Created by Eduardo on 21-01-2015.
  */
 public class QueryBuilder {
+
     /**
      * Specify your database name here
      * @return
      */
     public String getDatabaseName() {
         return "android-todolist";
+    }
+
+    /**
+     * Returns the docs101 collection
+     * @return
+     */
+    public String getCollectionName()
+    {
+        return "tasks";
     }
 
     /**
@@ -40,30 +50,12 @@ public class QueryBuilder {
     }
 
     /**
-     * Returns the docs101 collection
-     * @return
-     */
-    public String documentRequest()
-    {
-        return "android-todolist";
-    }
-
-    /**
      * Builds a complete URL using the methods specified above
      * @return
      */
-    public String buildContactsSaveURL()
+    public String buildTasksSaveURL()
     {
-        return getBaseUrl()+documentRequest()+docApiKeyUrl();
-    }
-
-    /**
-     * Builds a complete URL using the methods specified above
-     * @return
-     */
-    public String collectionsURL()
-    {
-        return getBaseUrl()+docApiKeyUrl();
+        return getBaseUrl()+getCollectionName()+docApiKeyUrl();
     }
 
 }
