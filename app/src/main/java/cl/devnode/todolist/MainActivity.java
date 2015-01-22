@@ -19,22 +19,39 @@ import cl.devnode.todolist.MongoConn.TaskModel;
 
 public class MainActivity extends ActionBarActivity {
     ArrayList<TaskModel> taskList = new ArrayList<TaskModel>();
+    TextView taskText;
+    TextView info;
+    public TaskAdapter adapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView info = (TextView) findViewById(R.id.info);
+        info = (TextView) findViewById(R.id.info);
+        taskText = (TextView) findViewById(R.id.taskText);
         ListView listView = (ListView) findViewById(R.id.list);
+
+        //Getting Tasks from MongoLab
         GetAsyncTask tsk = new GetAsyncTask(info);
         try {
             taskList = tsk.execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        TaskAdapter adapter = new TaskAdapter(this, taskList);
+        adapter = new TaskAdapter(this, taskList);
         listView.setAdapter(adapter);
     }
 
+    public void createNewTask(View v) {
+        TaskModel task = new TaskModel(taskText.getText().toString());
+        taskList.add(task);
+        taskText.setText("");
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

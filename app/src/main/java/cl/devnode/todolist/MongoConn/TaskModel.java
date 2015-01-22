@@ -9,6 +9,15 @@ public class TaskModel {
     public String text;
     public Boolean done;
 
+    public TaskModel() {
+    }
+
+    public TaskModel(String text) {
+        this.text = text;
+        this.done = false;
+        this.doc_id = null;
+    }
+
     public String getDoc_id() {
         return doc_id;
     }
