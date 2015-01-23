@@ -44,6 +44,6 @@ public class TaskModel {
 
     @Override
     public String toString() {
-        return "TaskModel [text=" + text + ", done=" + done.toString()+ "]";
+        return "TaskModel [text=" + text + ", done=" + done.toString() + "]";
     }
 }

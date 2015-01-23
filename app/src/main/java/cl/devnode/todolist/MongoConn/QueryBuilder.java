@@ -7,6 +7,7 @@ public class QueryBuilder {
 
     /**
      * Specify your database name here
+     *
      * @return
      */
     public String getDatabaseName() {
@@ -15,15 +16,16 @@ public class QueryBuilder {
 
     /**
      * Returns the docs101 collection
+     *
      * @return
      */
-    public String getCollectionName()
-    {
+    public String getCollectionName() {
         return "tasks";
     }
 
     /**
      * Specify your MongoLab API here
+     *
      * @return
      */
     public String getApiKey() {
@@ -33,29 +35,41 @@ public class QueryBuilder {
     /**
      * This constructs the URL that allows you to manage your database,
      * collections and documents
+     *
      * @return
      */
-    public String getBaseUrl()
-    {
-        return "https://api.mongolab.com/api/1/databases/"+getDatabaseName()+"/collections/";
+    public String getBaseUrl() {
+        return "https://api.mongolab.com/api/1/databases/" + getDatabaseName() + "/collections/";
     }
 
     /**
      * Completes the formating of your URL and adds your API key at the end
+     *
      * @return
      */
-    public String docApiKeyUrl()
-    {
-        return "?apiKey="+getApiKey();
+    public String docApiKeyUrl() {
+        return "?apiKey=" + getApiKey();
     }
 
     /**
      * Builds a complete URL using the methods specified above
+     *
      * @return
      */
-    public String buildTasksSaveURL()
+    public String buildTasksSaveURL() {
+        return getBaseUrl() + getCollectionName() + docApiKeyUrl();
+    }
+
+    /**
+     * Formats the contact details for MongoHLab Posting
+     * @param task: Details of the person
+     * @return
+     */
+    public String createTask(TaskModel task)
     {
-        return getBaseUrl()+getCollectionName()+docApiKeyUrl();
+        return String
+                .format("{\"text\": \"%s\", " + "\"done\": \"%s\"}",
+                 task.text, task.done);
     }
 
 }

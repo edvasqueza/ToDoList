@@ -1,27 +1,27 @@
 package cl.devnode.todolist;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import cl.devnode.todolist.MongoConn.GetAsyncTask;
+import cl.devnode.todolist.MongoConn.PostAsyncTask;
 import cl.devnode.todolist.MongoConn.TaskModel;
 
 
 public class MainActivity extends ActionBarActivity {
-    ArrayList<TaskModel> taskList = new ArrayList<TaskModel>();
+    public TaskAdapter adapter = null;
+    ArrayList<TaskModel> taskList = new ArrayList<>();
     TextView taskText;
     TextView info;
-    public TaskAdapter adapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
         ListView listView = (ListView) findViewById(R.id.list);
 
         //Getting Tasks from MongoLab
-        GetAsyncTask tsk = new GetAsyncTask(info);
+        GetAsyncTask tsk = new GetAsyncTask();
         try {
             taskList = tsk.execute().get();
         } catch (InterruptedException | ExecutionException e) {
@@ -43,6 +43,12 @@ public class MainActivity extends ActionBarActivity {
 
     public void createNewTask(View v) {
         TaskModel task = new TaskModel(taskText.getText().toString());
+        PostAsyncTask tsk = new PostAsyncTask(getApplicationContext());
+        try {
+            Boolean isSaved = tsk.execute(task).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         taskList.add(task);
         taskText.setText("");
 

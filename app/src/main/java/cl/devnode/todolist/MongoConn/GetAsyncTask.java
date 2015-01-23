@@ -2,7 +2,6 @@ package cl.devnode.todolist.MongoConn;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.mongodb.DBObject;
 
@@ -20,18 +19,11 @@ import java.util.ArrayList;
  */
 public class GetAsyncTask extends AsyncTask<Void, Void, ArrayList<TaskModel>> {
 
-    private TextView text;
-
-    public GetAsyncTask(TextView target) {
-        text = target;
-    }
-
     @Override
     protected ArrayList<TaskModel> doInBackground(Void... params) {
-        BufferedReader in = null;
+        BufferedReader in;
         ArrayList<TaskModel> taskList = new ArrayList<>();
-        try
-        {
+        try {
             QueryBuilder qb = new QueryBuilder();
 
             HttpClient httpClient = new DefaultHttpClient();
@@ -43,7 +35,7 @@ public class GetAsyncTask extends AsyncTask<Void, Void, ArrayList<TaskModel>> {
 
             String server_output = in.readLine();
 
-            String mongoarray = "{ \"artificial_basicdb_list\": "+server_output+"}";
+            String mongoarray = "{ \"artificial_basicdb_list\": " + server_output + "}";
             Object o = com.mongodb.util.JSON.parse(mongoarray);
 
             DBObject dbObj = (DBObject) o;
